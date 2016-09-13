@@ -1,6 +1,5 @@
 package com.mobile.appium;
 
-import com.core.BaseDriver;
 import com.core.logger.CustomLogger;
 import com.core.utils.PropertiesReader;
 import com.mobile.MobilePlatform;
@@ -14,17 +13,16 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Properties;
-
 
 /**
  * Created by pritamkadam on 10/09/16.
  */
-public class AppiumDriverFactory extends BaseDriver{
+public class AppiumDriverFactory {
     private static AppiumDriver driver;
     private static AppiumManager appiumManager;
     static
     {
+        CustomLogger.log.info("Loading all the properties files");
         PropertiesReader.loadAllProperties();
     }
 
@@ -109,15 +107,15 @@ public class AppiumDriverFactory extends BaseDriver{
         switch (mobilePlatform){
 
             case Web_Android:
-                driver = new AndroidDriver(new URL(appiumManager.getAppiumUrl() +"/wd/hub/"), androidWebCaps(udid, version));
+                driver = new AndroidDriver(new URL(appiumManager.getHost() +"/wd/hub/"), androidWebCaps(udid, version));
                 break;
 
             case iOS:
-                driver = new IOSDriver(new URL(appiumManager.getAppiumUrl() +"/wd/hub/"), iOSCaps(udid, version, mobilePlatform));
+                driver = new IOSDriver(new URL(appiumManager.getHost() +"/wd/hub/"), iOSCaps(udid, version, mobilePlatform));
                 break;
 
             case Android:
-                driver = new AndroidDriver(new URL(appiumManager.getAppiumUrl() +"/wd/hub/"), androidNativeCaps(udid, version));
+                driver = new AndroidDriver(new URL(appiumManager.getHost() +"/wd/hub/"), androidNativeCaps(udid, version));
                 break;
 
         }

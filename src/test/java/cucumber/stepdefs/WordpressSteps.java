@@ -1,5 +1,6 @@
 package cucumber.stepdefs;
 
+import cucumber.api.PendingException;
 import cucumber.api.java8.En;
 
 /**
@@ -10,11 +11,27 @@ public class WordpressSteps implements En{
 
     public WordpressSteps(){
 
-        Given("^The wordpress application file present in apps folder$", () -> {
-            // Write code here that turns the phrase above into concrete actions
-            System.out.println("Lambda ran successfully");
+        Given("^Wordpres is installed on device$", () -> {
 
         });
+
+        When("^I am on the wordpress login page$", () -> {
+
+        });
+
+        When("^I enter username and password$", () -> {
+
+        });
+
+        When("^I click on submit button$", () -> {
+
+        });
+
+        Then("^I should land on Welcome to wordpress page$", () -> {
+            
+        });
+
+
 
 
     }

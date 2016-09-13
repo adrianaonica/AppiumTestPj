@@ -11,10 +11,12 @@ public class TestUtils {
 
     @Test
     public void testPropertiesReader(){
+
         CustomLogger.log.setLevel(Level.ALL);
-        PropertiesReader.loadAllProperties();
-        System.out.println(PropertiesReader.config.getValue("config11"));
+//        PropertiesReader.loadAllProperties();
+        System.out.println(PropertiesReader.config.getValue("config"));
 
     }
+
 
 }

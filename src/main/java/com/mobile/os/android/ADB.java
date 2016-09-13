@@ -37,7 +37,7 @@ public class ADB {
     }
 
     public static ArrayList getConnectedDevices(){
-        ArrayList devices = new ArrayList();
+        ArrayList<String> devices = new ArrayList();
         String output = command("adb devices");
         for(String line : output.split("\n")){
             line = line.trim();
@@ -117,6 +117,12 @@ public class ADB {
 
     public String getDeviceModel(){
         return command("adb -s "+ID+" shell getprop ro.product.model");
+    }
+
+    public String getDeviceName(){
+        String model = getDeviceModel();
+        String name = model.split("-")[0].trim();
+        return name;
     }
 
     public String getDeviceSerialNumber(){
