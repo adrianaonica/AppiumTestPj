@@ -1,19 +1,23 @@
 package com.mobile.os.android;
 
+import com.mobile.MobileDevice;
+
 /**
  * Created by pritamkadam on 13/09/16.
  */
-public class AndroidDevice {
+public class AndroidDevice implements MobileDevice{
     private String name;
     private String  version;
     private String udid;
     private boolean isAvailable;
+    private boolean isSimulator;
 
-    public AndroidDevice(String name, String version, String udid, boolean isAvailable) {
+    public AndroidDevice(String name, String version, String udid, boolean isAvailable, boolean isSimulator) {
         this.name = name;
         this.version = version;
         this.udid = udid;
         this.isAvailable = isAvailable;
+        this.isSimulator=isSimulator;
     }
 
     public String getName() {
@@ -44,8 +48,39 @@ public class AndroidDevice {
         return isAvailable;
     }
 
+    @Override
+    public boolean isSimulator() {
+        return isSimulator;
+    }
+
     public void setAvailable(boolean available) {
         isAvailable = available;
+    }
+
+    @Override
+    public void setSimulator(boolean simulator) {
+        this.isSimulator=simulator;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AndroidDevice device = (AndroidDevice) o;
+
+        if (!name.equals(device.name)) return false;
+        if (!version.equals(device.version)) return false;
+        return udid.equals(device.udid);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + version.hashCode();
+        result = 31 * result + udid.hashCode();
+        return result;
     }
 
     @Override

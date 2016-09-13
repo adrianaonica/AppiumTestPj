@@ -13,7 +13,7 @@ import java.net.URL;
 /**
  * Created by pritamkadam on 09/09/16.
  */
-public class AppiumManager {
+public class AppiumService {
 
     AvailablePort port = new AvailablePort();
     public AppiumDriverLocalService appiumDriverLocalService;
@@ -123,13 +123,13 @@ public class AppiumManager {
         appiumDriverLocalService.start();
 
         CustomLogger.log.debug("Appium service started with following arguments => " +
-                "APPIUM_JS_FILE : " + APPIUM_JS_FILE.getAbsolutePath() +
-                "LOG_LEVEL : info" +
-                "LOG LOCATION : " + logFileLocation +
-                "WEBKIT_DEBUG_PROXY_PORT : " + webKitPort +
-                "TEMP_DIRECTORY : " + tmpDir +
-                "SESSION_OVERRIDE" +
-                "PORT : " + port);
+                " APPIUM_JS_FILE : " + APPIUM_JS_FILE.getAbsolutePath() +
+                " LOG_LEVEL : info" +
+                " LOG LOCATION : " + logFileLocation +
+                " WEBKIT_DEBUG_PROXY_PORT : " + webKitPort +
+                " TEMP_DIRECTORY : " + tmpDir +
+                " SESSION_OVERRIDE" +
+                " PORT : " + port);
 
         return builder;
 
@@ -140,7 +140,9 @@ public class AppiumManager {
     }
 
     public void destroyAppiumService() {
-        appiumDriverLocalService.stop();
-        CustomLogger.log.debug("Destroyed Appium server.");
+        if(appiumDriverLocalService.isRunning()) {
+            appiumDriverLocalService.stop();
+            CustomLogger.log.debug("Destroyed Appium server.");
+        }
     }
 }

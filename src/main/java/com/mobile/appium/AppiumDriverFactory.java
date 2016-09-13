@@ -19,7 +19,7 @@ import java.net.URL;
  */
 public class AppiumDriverFactory {
     private static AppiumDriver driver;
-    private static AppiumManager appiumManager;
+    private static AppiumService appiumService;
     static
     {
         CustomLogger.log.info("Loading all the properties files");
@@ -107,15 +107,15 @@ public class AppiumDriverFactory {
         switch (mobilePlatform){
 
             case Web_Android:
-                driver = new AndroidDriver(new URL(appiumManager.getHost() +"/wd/hub/"), androidWebCaps(udid, version));
+                driver = new AndroidDriver(new URL(appiumService.getHost() +"/wd/hub/"), androidWebCaps(udid, version));
                 break;
 
             case iOS:
-                driver = new IOSDriver(new URL(appiumManager.getHost() +"/wd/hub/"), iOSCaps(udid, version, mobilePlatform));
+                driver = new IOSDriver(new URL(appiumService.getHost() +"/wd/hub/"), iOSCaps(udid, version, mobilePlatform));
                 break;
 
             case Android:
-                driver = new AndroidDriver(new URL(appiumManager.getHost() +"/wd/hub/"), androidNativeCaps(udid, version));
+                driver = new AndroidDriver(new URL(appiumService.getHost() +"/wd/hub/"), androidNativeCaps(udid, version));
                 break;
 
         }

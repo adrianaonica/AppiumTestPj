@@ -4,7 +4,8 @@ import com.core.logger.CustomLogger;
 import com.mobile.os.android.ADB;
 import com.mobile.os.android.AndroidDevice;
 import com.mobile.os.iOS.Instruments;
-import com.mobile.os.iOS.iOSDDevice;
+import com.mobile.os.iOS.iOSDevice;
+import org.eclipse.jetty.util.ConcurrentHashSet;
 
 import java.util.ArrayList;
 
@@ -13,10 +14,10 @@ import java.util.ArrayList;
  */
 public class ConnectedDevices {
 
-    private static ArrayList<AndroidDevice> androidDevices = new ArrayList<>();
-    private static ArrayList<iOSDDevice> iOSDevices = new ArrayList<>();
+    private static ConcurrentHashSet<AndroidDevice> androidDevices = new ConcurrentHashSet<>();
+    private static ConcurrentHashSet<iOSDevice> iOSDevices = new ConcurrentHashSet<>();
 
-    public static ArrayList<AndroidDevice> getConnectedAndroidDevices(){
+    public static ConcurrentHashSet<AndroidDevice> getConnectedAndroidDevices(){
         ArrayList<String> listOfAndroidDevices;
         AndroidDevice device;
 
@@ -27,7 +28,8 @@ public class ConnectedDevices {
             String version = adb.getAndroidVersionAsString();
             String name = adb.getDeviceName();
             boolean isAvailable = true;
-            device = new AndroidDevice(name, version, udid, isAvailable);
+            boolean isSimulator = true;
+            device = new AndroidDevice(name, version, udid, isAvailable, isSimulator);
             androidDevices.add(device);
         }
         CustomLogger.log.debug(androidDevices.toString());
@@ -35,9 +37,9 @@ public class ConnectedDevices {
         return androidDevices;
     }
 
-    public static ArrayList<iOSDDevice> getConnectediOSDevices(){
+    public static ConcurrentHashSet<iOSDevice> getConnectediOSDevices(){
         ArrayList<String> lisOfiOSDevices;
-        iOSDDevice device;
+        iOSDevice device;
 
         lisOfiOSDevices = Instruments.getConnectedDevices();
 
@@ -49,7 +51,7 @@ public class ConnectedDevices {
             boolean isSimulator = false;
             if(line.contains("Simulator"))  isSimulator = true;
 
-            device = new iOSDDevice(name, version, udid, isAvailable, isSimulator);
+            device = new iOSDevice(name, version, udid, isAvailable, isSimulator);
             iOSDevices.add(device);
 
         }

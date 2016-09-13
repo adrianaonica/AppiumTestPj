@@ -4,7 +4,8 @@ import com.mobile.ConnectedDevices;
 import com.mobile.os.android.ADB;
 import com.mobile.os.android.AndroidDevice;
 import com.mobile.os.iOS.Instruments;
-import com.mobile.os.iOS.iOSDDevice;
+import com.mobile.os.iOS.iOSDevice;
+import org.eclipse.jetty.util.ConcurrentHashSet;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -18,7 +19,7 @@ public class TestConnectedDevices {
 
     @Test
     public void testConnectedAndroidDevices(){
-        ArrayList<AndroidDevice> androidDevices = ConnectedDevices.getConnectedAndroidDevices();
+        ConcurrentHashSet<AndroidDevice> androidDevices = ConnectedDevices.getConnectedAndroidDevices();
 
         Assert.assertEquals(ADB.getConnectedDevices().size(), androidDevices.size());
 
@@ -29,11 +30,11 @@ public class TestConnectedDevices {
 
     @Test
     public void testConnectedIOSDevices(){
-        ArrayList<iOSDDevice> iOSDevices = ConnectedDevices.getConnectediOSDevices();
+        ConcurrentHashSet<iOSDevice> iOSDevices = ConnectedDevices.getConnectediOSDevices();
 
         Assert.assertEquals(Instruments.getConnectedDevices().size(), iOSDevices.size());
 
-        for (iOSDDevice device : iOSDevices)
+        for (iOSDevice device : iOSDevices)
             System.out.println(device.toString());
 
     }
