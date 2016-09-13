@@ -1,22 +1,22 @@
 package com.mobile;
 
+import com.core.logger.CustomLogger;
 import com.mobile.os.android.ADB;
 import com.mobile.os.android.AndroidDevice;
 import com.mobile.os.iOS.Instruments;
 import com.mobile.os.iOS.iOSDDevice;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by pritamkadam on 13/09/16.
  */
 public class ConnectedDevices {
 
-    public static ArrayList<AndroidDevice> androidDevices = new ArrayList<>();
-    public static ArrayList<iOSDDevice> iOSDevices = new ArrayList<>();
+    private static ArrayList<AndroidDevice> androidDevices = new ArrayList<>();
+    private static ArrayList<iOSDDevice> iOSDevices = new ArrayList<>();
 
-    public  static ArrayList<AndroidDevice> getConnectedAndroidDevices(){
+    public static ArrayList<AndroidDevice> getConnectedAndroidDevices(){
         ArrayList<String> listOfAndroidDevices;
         AndroidDevice device;
 
@@ -30,6 +30,7 @@ public class ConnectedDevices {
             device = new AndroidDevice(name, version, udid, isAvailable);
             androidDevices.add(device);
         }
+        CustomLogger.log.debug(androidDevices.toString());
 
         return androidDevices;
     }
@@ -52,6 +53,7 @@ public class ConnectedDevices {
             iOSDevices.add(device);
 
         }
+        CustomLogger.log.debug(iOSDevices.toString());
 
         return iOSDevices;
 

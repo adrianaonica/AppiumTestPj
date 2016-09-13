@@ -10,12 +10,11 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 
-import static com.mobile.ConnectedDevices.androidDevices;
-
 /**
  * Created by pritamkadam on 13/09/16.
  */
-public class TestConncetedDevices {
+public class TestConnectedDevices {
+
 
     @Test
     public void testConncetedAndroidDevices(){
@@ -23,7 +22,7 @@ public class TestConncetedDevices {
 
         Assert.assertEquals(ADB.getConnectedDevices().size(), androidDevices.size());
 
-        for (AndroidDevice device : androidDevices)
+       for (AndroidDevice device : androidDevices)
             System.out.println(device.toString());
 
     }

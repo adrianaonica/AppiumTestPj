@@ -24,16 +24,16 @@ public class PropertiesReader extends Properties{
         try {
 
             config.load(new FileInputStream("config.properties"));
-            CustomLogger.log.info("Loaded config.properties.");
+            CustomLogger.log.info("Loaded config.properties");
 
             global.load(new FileInputStream("global.properties"));
-            CustomLogger.log.info("Loaded global.properties.");
+            CustomLogger.log.info("Loaded global.properties");
 
             iOS.load(new FileInputStream("iOS.properties"));
-            CustomLogger.log.info("Loaded iOS.properties.");
+            CustomLogger.log.info("Loaded iOS.properties");
 
             android.load(new FileInputStream("android.properties"));
-            CustomLogger.log.info("Loaded android.properties.");
+            CustomLogger.log.info("Loaded android.properties");
 
         } catch (IOException e) {
             e.printStackTrace();
