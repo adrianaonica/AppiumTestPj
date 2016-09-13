@@ -17,7 +17,7 @@ public class TestConnectedDevices {
 
 
     @Test
-    public void testConncetedAndroidDevices(){
+    public void testConnectedAndroidDevices(){
         ArrayList<AndroidDevice> androidDevices = ConnectedDevices.getConnectedAndroidDevices();
 
         Assert.assertEquals(ADB.getConnectedDevices().size(), androidDevices.size());
@@ -28,7 +28,7 @@ public class TestConnectedDevices {
     }
 
     @Test
-    public void testConncetediOSDevices(){
+    public void testConnectedIOSDevices(){
         ArrayList<iOSDDevice> iOSDevices = ConnectedDevices.getConnectediOSDevices();
 
         Assert.assertEquals(Instruments.getConnectedDevices().size(), iOSDevices.size());

@@ -41,17 +41,17 @@ public class AppiumDriverFactory {
         DesiredCapabilities androidNativeCaps = new DesiredCapabilities();
         androidNativeCaps.setCapability(MobileCapabilityType.DEVICE_NAME, "Android Device");
         androidNativeCaps.setCapability(MobileCapabilityType.PLATFORM_VERSION, version);
-        androidNativeCaps.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, PropertiesReader.config.getValue("APP_ACTIVITY"));
-        androidNativeCaps.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, PropertiesReader.config.getValue("APP_PACKAGE"));
-        androidNativeCaps.setCapability(MobileCapabilityType.APP, PropertiesReader.config.getValue("ANDROID_APP_PATH"));
+        androidNativeCaps.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, PropertiesReader.android.getValue("APP_ACTIVITY"));
+        androidNativeCaps.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, PropertiesReader.android.getValue("APP_PACKAGE"));
+        androidNativeCaps.setCapability(MobileCapabilityType.APP, PropertiesReader.android.getValue("ANDROID_APP_PATH"));
         androidNativeCaps.setCapability(MobileCapabilityType.UDID, udid);
 
         CustomLogger.log.info("[Desired Capabilities] =>" +
                 "DEVICE_NAME : Android Device" +
                 "PLATFORM_VERSION : " + version +
-                "APP_ACTIVITY : " + PropertiesReader.config.getValue("APP_ACTIVITY") +
-                "APP_PACKAGE : " + PropertiesReader.config.getValue("APP_PACKAGE") +
-                "APP : " + PropertiesReader.config.getValue("ANDROID_APP_PATH") +
+                "APP_ACTIVITY : " + PropertiesReader.android.getValue("APP_ACTIVITY") +
+                "APP_PACKAGE : " + PropertiesReader.android.getValue("APP_PACKAGE") +
+                "APP : " + PropertiesReader.android.getValue("ANDROID_APP_PATH") +
                 "UDID : " + udid);
 
         return androidNativeCaps;
@@ -63,14 +63,14 @@ public class AppiumDriverFactory {
         DesiredCapabilities androidWebCaps = new DesiredCapabilities();
         androidWebCaps.setCapability(MobileCapabilityType.DEVICE_NAME, "Android Device");
         androidWebCaps.setCapability(MobileCapabilityType.PLATFORM_VERSION, version);
-        androidWebCaps.setCapability(MobileCapabilityType.BROWSER_NAME, PropertiesReader.config.getValue("BROWSER"));
+        androidWebCaps.setCapability(MobileCapabilityType.BROWSER_NAME, PropertiesReader.android.getValue("BROWSER_NAME"));
         androidWebCaps.setCapability(MobileCapabilityType.UDID, udid);
         androidWebCaps.setCapability(MobileCapabilityType.TAKES_SCREENSHOT, true);
 
         CustomLogger.log.info("[Desired Capabilities] =>" +
                 "DEVICE_NAME : Android Device" +
                 "PLATFORM_VERSION : " + version +
-                "BROWSER : " + PropertiesReader.config.getValue("BROWSER") +
+                "BROWSER : " + PropertiesReader.android.getValue("BROWSER") +
                 "UDID : " + udid);
 
         return androidWebCaps;
@@ -84,9 +84,9 @@ public class AppiumDriverFactory {
         iOSCapabilities.setCapability(IOSMobileCapabilityType.AUTO_ACCEPT_ALERTS, true);
 
         if(mobilePlatform.getValue().equalsIgnoreCase("Web_iOS"))
-            iOSCapabilities.setCapability(IOSMobileCapabilityType.BROWSER_NAME, "SAFARI");
+            iOSCapabilities.setCapability(IOSMobileCapabilityType.BROWSER_NAME, PropertiesReader.iOS.getValue("BROWSER_NAME"));
         else
-            iOSCapabilities.setCapability(MobileCapabilityType.APP, PropertiesReader.config.getValue("IOS_APP_PATH"));
+            iOSCapabilities.setCapability(MobileCapabilityType.APP, PropertiesReader.iOS.getValue("IOS_APP_PATH"));
 
         if(udid.toCharArray().length == 40)
             iOSCapabilities.setCapability(MobileCapabilityType.UDID, udid);
@@ -96,7 +96,7 @@ public class AppiumDriverFactory {
         CustomLogger.log.info("[Desired Capabilities] =>" +
                 "DEVICE_NAME | UDID : " + udid +
                 "PLATFORM_VERSION : " + version +
-                "APP : " + PropertiesReader.config.getValue("IOS_APP_PATH"));
+                "APP : " + PropertiesReader.iOS.getValue("IOS_APP_PATH"));
 
         return iOSCapabilities;
     }
