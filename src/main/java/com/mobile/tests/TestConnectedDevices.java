@@ -30,7 +30,7 @@ public class TestConnectedDevices {
 
     @Test
     public void testConnectedIOSDevices(){
-        ConcurrentHashSet<iOSDevice> iOSDevices = ConnectedDevices.getConnectediOSDevices();
+        ConcurrentHashSet<iOSDevice> iOSDevices = ConnectedDevices.getConnectediOSDevicesOrSimulators();
 
         Assert.assertEquals(Instruments.getConnectedDevices().size(), iOSDevices.size());
 

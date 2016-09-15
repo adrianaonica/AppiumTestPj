@@ -18,7 +18,7 @@ public class AppiumService {
     AvailablePort port = new AvailablePort();
     public AppiumDriverLocalService appiumDriverLocalService;
 
-    public AppiumServiceBuilder startAppiumForAndroidAndiOSSimulator(String deviceID)
+    public AppiumServiceBuilder startAppiumForAndroiOriOSSimulator(String deviceID)
             throws Exception {
         System.out.println("**************************************************************************");
         System.out.println("** Starting Appium Service to handle Android Device:: " + deviceID + " ***");
@@ -65,35 +65,6 @@ public class AppiumService {
 
         return builder;
     }
-
-/*
-
-    public AppiumServiceBuilder startAppiumForiOSSimulators(String simulator, String methodName) throws Exception {
-
-        System.out.println("**********************************************************************\n");
-        System.out.println("Starting Appium Server "  + "\n");
-        System.out.println("**********************************************************************\n");
-
-        CustomLogger.log.info("Building Appium Service for iOS Simulator.");
-
-        String logFileLocation = System.getProperty("user.dir") + "/target/appiumlogs/" + simulator
-                .replaceAll("\\W", "_") + "__" + methodName + ".txt";
-
-        String tempDir = new File(System.getProperty("user.dir")).getAbsolutePath() + "/target/" + "tmp_" + port;
-
-        int port = this.port.getPort();
-        AppiumServiceBuilder builder =
-                new AppiumServiceBuilder()
-                        .withAppiumJS(new File(PropertiesReader.config.getValue("APPIUM_JS_PATH")))
-                        .withArgument(GeneralServerFlag.LOG_LEVEL, "info")
-                        .withLogFile(new File(logFileLocation))
-                        .withArgument(GeneralServerFlag.TEMP_DIRECTORY, tempDir)
-                        .withArgument(GeneralServerFlag.SESSION_OVERRIDE).usingPort(port);
-        appiumDriverLocalService = builder.build();
-        appiumDriverLocalService.start();
-        return builder;
-    }
-*/
 
     public AppiumServiceBuilder startAppiumForiOSDevices(String deviceID, String webKitPort) throws Exception {
         System.out.println("**********************************************************************");

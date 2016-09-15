@@ -52,26 +52,30 @@ public class BaseTest extends AppiumManager{
     @AfterClass()
     public void afterClass() throws InterruptedException, IOException {
 
+//      kill appium service and free device
         killAppiumServer();
+
         CustomLogger.log.debug("Freed device : " + currentDevice.getName() + " & killed appium service hosted at " + appiumService.getHost());
         CustomLogger.log.debug("Android devices status : " + androidDevicesHashSet.toString());
         CustomLogger.log.debug("iOS devices status : " + iOSDevicesHashSet.toString());
         CustomLogger.log.debug("iOS simulators status : " + iOSSimulatorsHashSet.toString());
     }
 
-/*
 
     @BeforeMethod()
     public void startApp(Method name) throws Exception {
 
-        if(prop.getProperty("DEVICE").equalsIgnoreCase("iOS"))
-            driver = startAppiumServerInParallel(name.getName(), iosNative());
-        else
-            driver = startAppiumServerInParallel(name.getName(), androidNative());
-
-        startLogResults(name.getName());
+       driver = getDriverInstance();
+//
+//        if(prop.getProperty("DEVICE").equalsIgnoreCase("iOS"))
+//            driver = startAppiumServerInParallel(name.getName(), iosNative());
+//        else
+//            driver = startAppiumServerInParallel(name.getName(), androidNative());
+//
+//        startLogResults(name.getName());
     }
 
+/*
     @AfterMethod()
     public void killServer(ITestResult result)
             throws InterruptedException, IOException {

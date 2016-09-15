@@ -1,6 +1,7 @@
 package com.mobile;
 
 import com.core.logger.CustomLogger;
+import com.core.utils.PropertiesReader;
 import com.mobile.os.android.ADB;
 import com.mobile.os.android.AndroidDevice;
 import com.mobile.os.iOS.Instruments;
@@ -16,6 +17,8 @@ public class ConnectedDevices {
 
     private static ConcurrentHashSet<AndroidDevice> androidDevices = new ConcurrentHashSet<>();
     private static ConcurrentHashSet<iOSDevice> iOSDevices = new ConcurrentHashSet<>();
+    private static ConcurrentHashSet<iOSDevice> iOSimulators = new ConcurrentHashSet<>();
+    private static ConcurrentHashSet<iOSDevice> iOSRealDevicesAndSimulators = new ConcurrentHashSet<>();
 
     public static ConcurrentHashSet<AndroidDevice> getConnectedAndroidDevices(){
         ArrayList<String> listOfAndroidDevices;
@@ -37,7 +40,7 @@ public class ConnectedDevices {
         return androidDevices;
     }
 
-    public static ConcurrentHashSet<iOSDevice> getConnectediOSDevices(){
+    public static ConcurrentHashSet<iOSDevice> getConnectediOSDevicesOrSimulators(){
         ArrayList<String> lisOfiOSDevices;
         iOSDevice device;
 
@@ -52,14 +55,29 @@ public class ConnectedDevices {
             if(line.contains("Simulator"))  isSimulator = true;
 
             device = new iOSDevice(name, version, udid, isAvailable, isSimulator);
-            iOSDevices.add(device);
+            if(isSimulator)
+                iOSimulators.add(device);
+            else
+                iOSDevices.add(device);
 
         }
         CustomLogger.log.debug(iOSDevices.toString());
-
-        return iOSDevices;
+        String deviceType =PropertiesReader.config.getValue("DEVICE");
+        if(deviceType.equalsIgnoreCase("iOS"))
+            return iOSDevices;
+        else if(deviceType.equalsIgnoreCase("iOS_Simulator"))
+            return iOSimulators;
+        else if(deviceType.equalsIgnoreCase("Any")){
+            iOSRealDevicesAndSimulators.addAll(iOSDevices);
+            iOSRealDevicesAndSimulators.addAll(iOSimulators);
+            return iOSRealDevicesAndSimulators;
+        }else
+            throw new RuntimeException("Invalid value for property 'DEVICE. " +
+                    "Supported values are => 1) iOS_Simulator " +
+                                            "2) iOS " +
+                                            "3) Android " +
+                                            "4) Any ");
 
     }
-
 
 }
