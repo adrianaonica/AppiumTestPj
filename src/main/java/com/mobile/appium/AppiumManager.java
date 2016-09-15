@@ -4,27 +4,50 @@ import com.core.logger.CustomLogger;
 import com.core.utils.PropertiesReader;
 import com.mobile.ConnectedDevices;
 import com.mobile.MobileDevice;
-import com.mobile.MobilePlatform;
 import com.mobile.os.android.AndroidDevice;
 import com.mobile.os.iOS.iOSDevice;
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.MobileElement;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.ios.IOSDriver;
+import io.appium.java_client.remote.AndroidMobileCapabilityType;
+import io.appium.java_client.remote.IOSMobileCapabilityType;
+import io.appium.java_client.remote.MobileCapabilityType;
+import io.appium.java_client.service.local.AppiumServiceBuilder;
+import org.apache.commons.io.FileUtils;
 import org.eclipse.jetty.util.ConcurrentHashSet;
+import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.ITestResult;
+import org.testng.SkipException;
 
+import java.awt.*;
 import java.io.*;
-import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 
 /**
  * Created by pritamkadam on 13/09/16.
  */
 public class AppiumManager extends ConnectedDevices{
 
-    public static AppiumDriver driver = null;
+    public static AppiumDriver<MobileElement> driver = null;
     public AppiumService appiumService = new AppiumService();
     public iOSDevice iOSDevice = null;
     public AndroidDevice androidDevice;
     public MobileDevice currentDevice;
-    public AppiumDriverFactory appiumDriverFactory = new AppiumDriverFactory();
 
     public static ConcurrentHashSet<iOSDevice> iOSDevicesHashSet = new ConcurrentHashSet<>();
     public static ConcurrentHashSet<AndroidDevice> androidDevicesHashSet = new ConcurrentHashSet<>();
@@ -32,20 +55,17 @@ public class AppiumManager extends ConnectedDevices{
 
     public static synchronized void storeAllConnectedDevices(){
         ConcurrentHashSet<iOSDevice> iOSDevicesAndSimulators = new ConcurrentHashSet<>();
-        String deviceType = PropertiesReader.config.getValue("DEVICE");
-
-        if(deviceType.equalsIgnoreCase("Any")) {
+        String platform = PropertiesReader.config.getValue("PLATFORM");
+        if(platform.equalsIgnoreCase("Mixed")) {
             androidDevicesHashSet = ConnectedDevices.getConnectedAndroidDevices();
-            iOSDevicesAndSimulators = ConnectedDevices.getConnectediOSDevicesOrSimulators();
-        }
-        else if(deviceType.contains("iOS"))  iOSDevicesAndSimulators = ConnectedDevices.getConnectediOSDevicesOrSimulators();
-        else if(deviceType.equalsIgnoreCase("Android"))   androidDevicesHashSet = ConnectedDevices.getConnectedAndroidDevices();
+            iOSDevicesAndSimulators = ConnectedDevices.getConnectediOSDevices();
+        }else if(platform.equalsIgnoreCase("iOS"))  iOSDevicesAndSimulators = ConnectedDevices.getConnectediOSDevices();
+        else if(platform.equalsIgnoreCase("Android"))   androidDevicesHashSet = ConnectedDevices.getConnectedAndroidDevices();
         else {
-            CustomLogger.log.error("Invalid value for PLATFORM " +
-                    "Supported values are => 1) Android " +
-                                            "2) iOS " +
-                                            "3) iOS_Simulator " +
-                                            "4) Any");
+            CustomLogger.log.error("Invalid value for PLATFORM" +
+                    "Supported values are => 1) Android" +
+                                            "2) iOS" +
+                                            "3) Mixed");
             throw new RuntimeException("Invalid value for property \"PLATFORM\" provided.");
         }
 
@@ -66,23 +86,13 @@ public class AppiumManager extends ConnectedDevices{
                 return iOSDevice;
             }
         }
-
-        CustomLogger.log.warn("Currently there are no iOS devices available. Searching for simulator..");
-        iOSDevice iOSSimulator = getNextAvailableiOSimulator();
-        return iOSSimulator;
+        CustomLogger.log.warn("Currently there are no iOS devices available.");
+        return null;
     }
 
     public static synchronized iOSDevice getNextAvailableiOSimulator() {
-        Random random = new Random();
-        int number = random.nextInt(iOSSimulatorsHashSet.size() + 1);
-        int i = 0;
 
         for(iOSDevice iOSDevice : iOSSimulatorsHashSet){
-
-            if(i < number) {
-                i++;
-                continue;
-            }
             if(iOSDevice.isAvailable()) {
                 iOSDevice.setAvailable(false);
                 for(iOSDevice iOSDevice1 : iOSSimulatorsHashSet){
@@ -110,53 +120,33 @@ public class AppiumManager extends ConnectedDevices{
 
 //      Get next available device and start appium server.
         String DEVICE = PropertiesReader.config.getValue("DEVICE");
-
         if(DEVICE.equalsIgnoreCase("iOS_Simulator") || DEVICE.equalsIgnoreCase("iOS")) {
             if (DEVICE.equalsIgnoreCase("iOS_Simulator")) {
                 iOSDevice = getNextAvailableiOSimulator();
             }else if (DEVICE.equalsIgnoreCase("iOS")) {
                 iOSDevice = getNextAvailableiOSDevice();
-                if(iOSDevice==null)
-                    iOSDevice = getNextAvailableiOSimulator();
             }
             if(iOSDevice == null){
-                CustomLogger.log.debug("iOS device not found. Searching for available android device.");
+                CustomLogger.log.debug("Searching for available android device.");
                 androidDevice = getNextAvailableAndroidDevice();
                 if(androidDevice == null){
                     CustomLogger.log.error("No device available to start execution.");
                     throw new RuntimeException("No device found.");
                 }
-                appiumService.startAppiumForAndroiOriOSSimulator(androidDevice.getName());
+                appiumService.startAppiumForAndroidAndiOSSimulator(androidDevice.getName());
                 currentDevice = androidDevice;
             }else {
-                appiumService.startAppiumForAndroiOriOSSimulator(iOSDevice.getName());
+                appiumService.startAppiumForAndroidAndiOSSimulator(iOSDevice.getName());
                 currentDevice = iOSDevice;
             }
         }else if(DEVICE.equalsIgnoreCase("Android")){
             androidDevice = getNextAvailableAndroidDevice();
             if(androidDevice == null){
-                CustomLogger.log.error("No device  available to start execution.");
+                CustomLogger.log.error("No device available to start execution.");
                 throw new RuntimeException("No device found.");
             }
-            appiumService.startAppiumForAndroiOriOSSimulator(androidDevice.getName());
+            appiumService.startAppiumForAndroidAndiOSSimulator(androidDevice.getName());
             currentDevice = androidDevice;
-        }else if(DEVICE.equalsIgnoreCase("Any")){
-            Random random = new Random();
-            int number = random.nextInt(3) +1;
-            switch (number){
-                case 1 : iOSDevice = getNextAvailableiOSimulator();
-                    appiumService.startAppiumForAndroiOriOSSimulator(iOSDevice.getName());
-                    currentDevice = iOSDevice;
-                    break;
-                case 2 : androidDevice = getNextAvailableAndroidDevice();
-                    appiumService.startAppiumForAndroiOriOSSimulator(androidDevice.getName());
-                    currentDevice = androidDevice;
-                    break;
-                case 3 : iOSDevice = getNextAvailableiOSDevice();
-                    appiumService.startAppiumForAndroiOriOSSimulator(iOSDevice.getName());
-                    currentDevice = iOSDevice;
-                    break;
-            }
         }
     }
 
@@ -177,34 +167,19 @@ public class AppiumManager extends ConnectedDevices{
         currentDevice.setAvailable(true);
     }
 
-    public synchronized AppiumDriver getDriverInstanceForiOS() throws MalformedURLException {
-        appiumDriverFactory.createDriver(appiumService.getHost(),currentDevice.getName(), currentDevice.getUdid(),currentDevice.getVersion(),MobilePlatform.iOS);
-        driver = appiumDriverFactory.getDriver();
-        return driver;
-    }
-
-    public synchronized AppiumDriver getDriverInstanceForAndroid() throws MalformedURLException {
-        if(PropertiesReader.config.getValue("AUT").equalsIgnoreCase("Web"))
-            appiumDriverFactory.createDriver(appiumService.getHost(),currentDevice.getName(), currentDevice.getUdid(),currentDevice.getVersion(),MobilePlatform.Web_Android);
-        else
-            appiumDriverFactory.createDriver(appiumService.getHost(),currentDevice.getName(), currentDevice.getUdid(),currentDevice.getVersion(),MobilePlatform.Android);
-        driver = appiumDriverFactory.getDriver();
-        return driver;
-
-    }
-
-    public synchronized AppiumDriver getDriverInstance() throws MalformedURLException {
-        String deviceName = currentDevice.getName();
-        String udid = currentDevice.getUdid();
-
-        if(deviceName.contains("Apple") || deviceName.contains("iPhone") || deviceName.contains("iPad") || udid.length() == 40)
-            driver = getDriverInstanceForiOS();
-        else
-            driver = getDriverInstanceForAndroid();
-
-        return driver;
-    }
 /*
+
+
+    public static void freeDevice(String deviceId) {
+
+        deviceMapping.put(deviceId, true);
+    }
+
+    public synchronized AppiumServiceBuilder startAppiumServer(String deviceName) throws Exception {
+
+
+        return null;
+    }
 
 
     public synchronized AppiumDriver<MobileElement> startAppiumServerInParallel(String methodName)
@@ -676,7 +651,7 @@ public class AppiumManager extends ConnectedDevices{
             File[] files1 = framePath.listFiles();
             if (framePath.exists()) {
                 for (int i = 0; i < files1.length; i++) {
-                    if (files1[i].isFile()) { //this line weeds out other directories/foldestartAppiumServerInParallelrs
+                    if (files1[i].isFile()) { //this line weeds out other directories/folders
                         System.out.println(files1[i]);
 
                         Path p = Paths.get(files1[i].toString());
