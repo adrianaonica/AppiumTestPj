@@ -20,11 +20,6 @@ public class PropertiesReader extends Properties{
 
     static
     {
-//        set log4j properties
-        String usrDir = new File(System.getProperty("user.dir")).getAbsolutePath();
-        System.setProperty("my.log", usrDir + "/target/");
-        CustomLogger.log.setLevel(Level.ALL);
-
         loadAllProperties();
     }
 

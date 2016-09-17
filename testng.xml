@@ -4,8 +4,8 @@
 
     <test name="TestNG Test">
         <classes>
-            <class name="testng.WordpressTest"/>
-            <class name="testng.WordpressTest2"/>
+            <class name="testng.apps.wordpress.WordpressTest"/>
+            <class name="testng.apps.wordpress.WordpressTest2"/>
 
         </classes>
     </test> <!-- TestNG Test -->

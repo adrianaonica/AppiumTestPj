@@ -27,7 +27,7 @@ public class AppiumDriverFactory {
         AppiumDriverFactory.driver = driver;
     }
 
-    public AppiumDriver getDriver() {
+    public static AppiumDriver getDriver() {
 
         return driver;
     }

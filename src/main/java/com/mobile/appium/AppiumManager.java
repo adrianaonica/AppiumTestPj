@@ -21,11 +21,14 @@ public class AppiumManager extends ConnectedDevices{
 
     public static AppiumDriver driver = null;
 
-
-
     public AppiumService appiumService = new AppiumService();
     public iOSDevice iOSDevice = null;
     public AndroidDevice androidDevice;
+    public static ConcurrentHashSet<iOSDevice> iOSDevicesHashSet = new ConcurrentHashSet<>();
+    public static ConcurrentHashSet<AndroidDevice> androidDevicesHashSet = new ConcurrentHashSet<>();
+    public static ConcurrentHashSet<iOSDevice> iOSSimulatorsHashSet = new ConcurrentHashSet<>();
+    public MobileDevice currentDevice;
+    public AppiumDriverFactory appiumDriverFactory = new AppiumDriverFactory();
 
     public void setCurrentDevice(MobileDevice currentDevice) {
         this.currentDevice = currentDevice;
@@ -42,13 +45,6 @@ public class AppiumManager extends ConnectedDevices{
     public AppiumService getAppiumService() {
         return appiumService;
     }
-
-    public MobileDevice currentDevice;
-    public AppiumDriverFactory appiumDriverFactory = new AppiumDriverFactory();
-
-    public static ConcurrentHashSet<iOSDevice> iOSDevicesHashSet = new ConcurrentHashSet<>();
-    public static ConcurrentHashSet<AndroidDevice> androidDevicesHashSet = new ConcurrentHashSet<>();
-    public static ConcurrentHashSet<iOSDevice> iOSSimulatorsHashSet = new ConcurrentHashSet<>();
 
     public static synchronized void storeAllConnectedDevices(){
         ConcurrentHashSet<iOSDevice> iOSDevicesAndSimulators = new ConcurrentHashSet<>();
@@ -187,6 +183,9 @@ public class AppiumManager extends ConnectedDevices{
         appiumService.destroyAppiumService();
 
         freeDevice(currentDevice);
+
+        CustomLogger.log.debug("Freed device : " + currentDevice.getName() +
+                " & killed appium service hosted at " + appiumService.getHost());
     }
 
     public static void freeDevice(MobileDevice currentDevice) {

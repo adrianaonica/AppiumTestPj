@@ -5,10 +5,10 @@ Feature: Wordpress Web
 
 
   Scenario: Validate all the plans
-    When I am on Wordpres landing page
+    When I am on Wordpress landing page
 
   Scenario: Create Website
-    When I am on Wordpres landing page
+    When I am on Wordpress landing page
 
   Scenario: Click on Menu
-    When I am on Wordpres landing page
+    When I am on Wordpress landing page

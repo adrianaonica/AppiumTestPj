@@ -5,6 +5,7 @@ import com.core.logger.CustomLogger;
 import com.mobile.MobileDevice;
 import com.mobile.appium.AppiumManager;
 import com.mobile.appium.AppiumService;
+import com.mobile.os.android.ADB;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 
@@ -37,10 +38,13 @@ public class CucumberHooks extends AppiumManager{
 
         globalMode = true;
 
-//          Get all connected devices
+//      Configure logger properties
+        CustomLogger.configure();
+
+//      Get all connected devices
         storeAllConnectedDevices();
 
-//          Get next available device and start appium service.
+//      Get next available device and start appium service.
         startAppiumService();
         currentDevice = getCurrentDevice();
         appiumService = getAppiumService();
@@ -53,16 +57,15 @@ public class CucumberHooks extends AppiumManager{
 
     public void afterAll(){
         try {
-//                  kill appium service and free device
+//          kill appium service and free device
             killAppiumServer();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-//              Delete tmp files/dir from target folder
+//      Delete tmp files/dir from target folder
         CommandPrompt.run("rm -rd tmp*");
 
-        CustomLogger.log.debug("Freed device : " + currentDevice.getName() + " & killed appium service hosted at " + appiumService.getHost());
         CustomLogger.log.debug("Android devices status : " + androidDevicesHashSet.toString());
         CustomLogger.log.debug("iOS devices status : " + iOSDevicesHashSet.toString());
         CustomLogger.log.debug("iOS simulators status : " + iOSSimulatorsHashSet.toString());
