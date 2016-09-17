@@ -23,6 +23,7 @@ public class AppiumService {
     public AppiumDriverLocalService appiumDriverLocalService;
     String webKitPort = "";
 
+
     public AppiumServiceBuilder startAppiumForAndroidDevice(String deviceID)
             throws Exception {
         System.out.println("**************************************************************************");

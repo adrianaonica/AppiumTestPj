@@ -6,10 +6,10 @@ import cucumber.api.java8.En;
 /**
  * Created by pritamkadam on 09/09/16.
  */
-public class WordpressSteps implements En{
+public class WordpressAppSteps implements En{
 
 
-    public WordpressSteps(){
+    public WordpressAppSteps(){
 
         Given("^Wordpres is installed on device$", () -> {
 

@@ -1,6 +1,9 @@
 package com.core.utils;
 
 import com.core.logger.CustomLogger;
+import org.apache.log4j.Level;
+
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -17,6 +20,11 @@ public class PropertiesReader extends Properties{
 
     static
     {
+//        set log4j properties
+        String usrDir = new File(System.getProperty("user.dir")).getAbsolutePath();
+        System.setProperty("my.log", usrDir + "/target/");
+        CustomLogger.log.setLevel(Level.ALL);
+
         loadAllProperties();
     }
 

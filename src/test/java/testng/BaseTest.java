@@ -23,11 +23,6 @@ public class BaseTest extends AppiumManager{
     @BeforeClass()
     public void beforeClass() throws Exception {
 
-//      set log4j properties
-        String usrDir = new File(System.getProperty("user.dir")).getAbsolutePath();
-        System.setProperty("my.log", usrDir + "/target/");
-        CustomLogger.log.setLevel(Level.ALL);
-
 //      Get all connected devices
         storeAllConnectedDevices();
 
@@ -53,15 +48,14 @@ public class BaseTest extends AppiumManager{
 
 
     @BeforeMethod()
-    public void startApp(Method name) throws Exception {
+    public void setupDriver(Method name) throws Exception {
        driver = getDriverInstance();
     }
 
 
     @AfterMethod()
-    public void killServer(ITestResult result)
+    public void killDriverInstance(ITestResult result)
     {
-        driver.close();
         driver.quit();
     }
 

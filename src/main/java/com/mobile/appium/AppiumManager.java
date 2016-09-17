@@ -20,12 +20,31 @@ import java.util.Random;
 public class AppiumManager extends ConnectedDevices{
 
     public static AppiumDriver driver = null;
+
+
+
     public AppiumService appiumService = new AppiumService();
     public iOSDevice iOSDevice = null;
     public AndroidDevice androidDevice;
+
+    public void setCurrentDevice(MobileDevice currentDevice) {
+        this.currentDevice = currentDevice;
+    }
+
+    public MobileDevice getCurrentDevice() {
+        return currentDevice;
+    }
+
+    public void setAppiumService(AppiumService appiumService) {
+        this.appiumService = appiumService;
+    }
+
+    public AppiumService getAppiumService() {
+        return appiumService;
+    }
+
     public MobileDevice currentDevice;
     public AppiumDriverFactory appiumDriverFactory = new AppiumDriverFactory();
-    private String webKitPort = "";
 
     public static ConcurrentHashSet<iOSDevice> iOSDevicesHashSet = new ConcurrentHashSet<>();
     public static ConcurrentHashSet<AndroidDevice> androidDevicesHashSet = new ConcurrentHashSet<>();
@@ -205,5 +224,6 @@ public class AppiumManager extends ConnectedDevices{
 
         return driver;
     }
+
 
 }

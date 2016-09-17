@@ -14,11 +14,6 @@ public class WordpressTest2 extends BaseTest{
 
         driver.get("http://www.stackoverflow.com");
 
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
@@ -27,10 +22,5 @@ public class WordpressTest2 extends BaseTest{
         System.out.println("testWordpress1");
         driver.get("http://www.wordpress.com");
 
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }
