@@ -7,6 +7,7 @@ import com.mobile.MobileDevice;
 import com.mobile.MobilePlatform;
 import com.mobile.os.android.AndroidDevice;
 import com.mobile.os.iOS.iOSDevice;
+import com.mobile.os.iOS.iOSWebKitDebugProxy;
 import io.appium.java_client.AppiumDriver;
 import org.eclipse.jetty.util.ConcurrentHashSet;
 
@@ -25,6 +26,7 @@ public class AppiumManager extends ConnectedDevices{
     public AndroidDevice androidDevice;
     public MobileDevice currentDevice;
     public AppiumDriverFactory appiumDriverFactory = new AppiumDriverFactory();
+    private String webKitPort = "";
 
     public static ConcurrentHashSet<iOSDevice> iOSDevicesHashSet = new ConcurrentHashSet<>();
     public static ConcurrentHashSet<AndroidDevice> androidDevicesHashSet = new ConcurrentHashSet<>();
@@ -72,6 +74,9 @@ public class AppiumManager extends ConnectedDevices{
         return iOSSimulator;
     }
 
+//    As xcode support only one iOS simulator to be launched at one time,
+//    Here getting random iOS available simulator
+//    And marking rest of the simulators as false for execution.
     public static synchronized iOSDevice getNextAvailableiOSimulator() {
         Random random = new Random();
         int number = random.nextInt(iOSSimulatorsHashSet.size() + 1);
@@ -126,10 +131,10 @@ public class AppiumManager extends ConnectedDevices{
                     CustomLogger.log.error("No device available to start execution.");
                     throw new RuntimeException("No device found.");
                 }
-                appiumService.startAppiumForAndroiOriOSSimulator(androidDevice.getName());
+                appiumService.startAppiumForAndroidDevice(androidDevice.getName());
                 currentDevice = androidDevice;
             }else {
-                appiumService.startAppiumForAndroiOriOSSimulator(iOSDevice.getName());
+                appiumService.startAppiumForiOSDevice(iOSDevice);
                 currentDevice = iOSDevice;
             }
         }else if(DEVICE.equalsIgnoreCase("Android")){
@@ -138,22 +143,22 @@ public class AppiumManager extends ConnectedDevices{
                 CustomLogger.log.error("No device  available to start execution.");
                 throw new RuntimeException("No device found.");
             }
-            appiumService.startAppiumForAndroiOriOSSimulator(androidDevice.getName());
+            appiumService.startAppiumForAndroidDevice(androidDevice.getName());
             currentDevice = androidDevice;
         }else if(DEVICE.equalsIgnoreCase("Any")){
             Random random = new Random();
             int number = random.nextInt(3) +1;
             switch (number){
                 case 1 : iOSDevice = getNextAvailableiOSimulator();
-                    appiumService.startAppiumForAndroiOriOSSimulator(iOSDevice.getName());
+                    appiumService.startAppiumForiOSDevice(iOSDevice);
                     currentDevice = iOSDevice;
                     break;
                 case 2 : androidDevice = getNextAvailableAndroidDevice();
-                    appiumService.startAppiumForAndroiOriOSSimulator(androidDevice.getName());
+                    appiumService.startAppiumForAndroidDevice(androidDevice.getName());
                     currentDevice = androidDevice;
                     break;
                 case 3 : iOSDevice = getNextAvailableiOSDevice();
-                    appiumService.startAppiumForAndroiOriOSSimulator(iOSDevice.getName());
+                    appiumService.startAppiumForiOSDevice(iOSDevice);
                     currentDevice = iOSDevice;
                     break;
             }
@@ -162,13 +167,7 @@ public class AppiumManager extends ConnectedDevices{
 
     public synchronized void killAppiumServer() throws InterruptedException, IOException {
         appiumService.destroyAppiumService();
-       /*
-        if (driver.toString().split(":")[0].trim().equals("IOSDriver")) {
-            if(!prop.getProperty("mode").equalsIgnoreCase("simulator"))
-                iosDevice.destroyIOSWebKitProxy();
-            else
-                return;
-        }*/
+
         freeDevice(currentDevice);
     }
 
@@ -178,16 +177,19 @@ public class AppiumManager extends ConnectedDevices{
     }
 
     public synchronized AppiumDriver getDriverInstanceForiOS() throws MalformedURLException {
-        appiumDriverFactory.createDriver(appiumService.getHost(),currentDevice.getName(), currentDevice.getUdid(),currentDevice.getVersion(),MobilePlatform.iOS);
+        if(PropertiesReader.config.getValue("AUT").equalsIgnoreCase("Web"))
+            appiumDriverFactory.createDriver(appiumService.getHost(),currentDevice,MobilePlatform.Web_iOS);
+        else
+            appiumDriverFactory.createDriver(appiumService.getHost(),currentDevice,MobilePlatform.iOS);
         driver = appiumDriverFactory.getDriver();
         return driver;
     }
 
     public synchronized AppiumDriver getDriverInstanceForAndroid() throws MalformedURLException {
         if(PropertiesReader.config.getValue("AUT").equalsIgnoreCase("Web"))
-            appiumDriverFactory.createDriver(appiumService.getHost(),currentDevice.getName(), currentDevice.getUdid(),currentDevice.getVersion(),MobilePlatform.Web_Android);
+            appiumDriverFactory.createDriver(appiumService.getHost(),currentDevice,MobilePlatform.Web_Android);
         else
-            appiumDriverFactory.createDriver(appiumService.getHost(),currentDevice.getName(), currentDevice.getUdid(),currentDevice.getVersion(),MobilePlatform.Android);
+            appiumDriverFactory.createDriver(appiumService.getHost(),currentDevice,MobilePlatform.Android);
         driver = appiumDriverFactory.getDriver();
         return driver;
 
