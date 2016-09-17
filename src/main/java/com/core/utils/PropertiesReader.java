@@ -45,8 +45,9 @@ public class PropertiesReader extends Properties{
         if(containsKey(key))
             return getProperty(key);
         else {
-            CustomLogger.log.error(key + " property not present in one of the properties file.");
-            throw new RuntimeException(key + " property not present in one of properties file");
+            CustomLogger.log.warn(key + " property not present in one of the properties file.");
+            return "";
+//            throw new RuntimeException(key + " property not present in one of properties file");
         }
     }
 
