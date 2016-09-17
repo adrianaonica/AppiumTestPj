@@ -1,5 +1,6 @@
 package testng;
 
+import com.core.cli.CommandPrompt;
 import com.core.logger.CustomLogger;
 import com.core.utils.PropertiesReader;
 import com.mobile.ConnectedDevices;
@@ -54,6 +55,9 @@ public class BaseTest extends AppiumManager{
 
 //      kill appium service and free device
         killAppiumServer();
+
+//      Delete tmp files/dir from target folder
+        CommandPrompt.run("rm -rd tmp*");
 
         CustomLogger.log.debug("Freed device : " + currentDevice.getName() + " & killed appium service hosted at " + appiumService.getHost());
         CustomLogger.log.debug("Android devices status : " + androidDevicesHashSet.toString());
