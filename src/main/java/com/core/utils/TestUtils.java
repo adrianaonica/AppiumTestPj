@@ -16,8 +16,14 @@ public class TestUtils {
     @Test
     public void testPropertiesReader(){
 
-        System.out.println(PropertiesReader.config.getValue("APPIUM_JS_PATH"));
+        String usrDir = new File(System.getProperty("user.dir")).getAbsolutePath();
+        System.setProperty("my.log", usrDir + "/target/");
+        CustomLogger.log.setLevel(Level.ALL);
 
+        String APPIUM_JS_PATH = PropertiesReader.config.getValue("APPIUM_JS_PATH");
+
+        String iOSWebKitDebugProxyRunnerPath = APPIUM_JS_PATH.substring(0, APPIUM_JS_PATH.indexOf("build")) + "bin/ios-webkit-debug-proxy-launcher.js";
+        System.out.println(iOSWebKitDebugProxyRunnerPath);
     }
 
     @Test
