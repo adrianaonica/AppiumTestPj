@@ -27,6 +27,7 @@ public class CucumberHooks extends AppiumManager{
         setCurrentDevice(currentDevice);
         setAppiumService(appiumService);
         driver = getDriverInstance();
+
     }
 
     @After
