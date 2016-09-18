@@ -3,9 +3,10 @@ Feature: Speedtest navigation's
   As a developer
   I want to verify all navigation's within my app.
 
-  Background: Speedtest is installed on device
+
 
   Scenario: Navigate to Home Page
+    Given Speedtest is installed on device
     Given I am on Begin Test page
     When I click on Begin Test button
     Then I should navigate to Home page

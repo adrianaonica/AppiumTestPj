@@ -16,7 +16,6 @@ import io.appium.java_client.MobileElement;
 public class CucumberHooks extends AppiumManager{
     private static MobileDevice currentDevice;
     private static AppiumService appiumService;
-    private static AppiumDriver<MobileElement> driver;
 
     private static boolean globalMode = false;
 
@@ -34,7 +33,7 @@ public class CucumberHooks extends AppiumManager{
 
     @After
     public void afterHook(){
-        driver.quit();
+        getDriver().quit();
     }
 
     public void beforeAll() throws Exception {

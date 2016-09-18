@@ -2,6 +2,7 @@ package testng;
 
 import com.core.cli.CommandPrompt;
 import com.core.logger.CustomLogger;
+import com.core.managers.OSManager;
 import com.mobile.appium.AppiumManager;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
@@ -40,7 +41,7 @@ public class BaseTest extends AppiumManager{
         killAppiumServer();
 
 //      Delete tmp files/dir from target folder
-        CommandPrompt.run("rm -rd tmp*");
+        CommandPrompt.run("rm -rd " + OSManager.getWorkingDir() + "/target/tmp*");
 
         CustomLogger.log.debug("Android devices status : " + androidDevicesHashSet.toString());
         CustomLogger.log.debug("iOS devices status : " + iOSDevicesHashSet.toString());

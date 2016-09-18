@@ -9,18 +9,7 @@ import io.appium.java_client.MobileElement;
 /**
  * Created by pritamkadam on 17/09/16.
  */
-public class BaseStepDefinition {
-
-    public AppiumDriver<MobileElement> driver;
-    private static AppiumManager appiumManager = new AppiumManager();
-//    ADB adb = new ADB();
-
-
-
-    public AppiumDriver<MobileElement> getAppiumDriver(){
-        return getAppiumDriver();
-    }
-
+public class BaseStepDefinition extends AppiumManager{
 
 
 }
