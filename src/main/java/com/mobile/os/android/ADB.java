@@ -18,12 +18,9 @@ public class ADB {
     public ADB(String deviceID){ID = deviceID;}
 
     public static String command(String command){
-        CustomLogger.log.debug("Formatting ADB Command: "+command);
         if(command.startsWith("adb")) command = command.replace("adb ", AndroidSdk.getAndroidHome()+"/platform-tools/adb ");
         else throw new RuntimeException("This method is designed to run ADB commands only!");
-        CustomLogger.log.debug("Formatted ADB Command: "+command);
         String output = CommandPrompt.run(command);
-        CustomLogger.log.debug("Output of the ADB Command: "+output);
         if(output == null) return "";
         else return output.trim();
     }

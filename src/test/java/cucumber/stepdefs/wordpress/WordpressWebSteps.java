@@ -1,8 +1,9 @@
-package cucumber.stepdefs;
+package cucumber.stepdefs.wordpress;
 
 import com.core.managers.DriverManager;
 import com.mobile.appium.AppiumManager;
 import cucumber.api.java8.En;
+import cucumber.stepdefs.BaseStepDefinition;
 import org.testng.Assert;
 
 /**

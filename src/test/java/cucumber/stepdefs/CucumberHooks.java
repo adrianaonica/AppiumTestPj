@@ -5,9 +5,10 @@ import com.core.logger.CustomLogger;
 import com.mobile.MobileDevice;
 import com.mobile.appium.AppiumManager;
 import com.mobile.appium.AppiumService;
-import com.mobile.os.android.ADB;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.MobileElement;
 
 /**
  * Created by pritamkadam on 17/09/16.
@@ -15,6 +16,7 @@ import cucumber.api.java.Before;
 public class CucumberHooks extends AppiumManager{
     private static MobileDevice currentDevice;
     private static AppiumService appiumService;
+    private static AppiumDriver<MobileElement> driver;
 
     private static boolean globalMode = false;
 
@@ -26,7 +28,7 @@ public class CucumberHooks extends AppiumManager{
 
         setCurrentDevice(currentDevice);
         setAppiumService(appiumService);
-        driver = getDriverInstance();
+        createDriverInstance();
 
     }
 

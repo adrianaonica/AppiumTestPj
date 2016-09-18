@@ -1,4 +1,4 @@
-package cucumber.stepdefs;
+package cucumber.stepdefs.wordpress;
 
 import cucumber.api.PendingException;
 import cucumber.api.java8.En;

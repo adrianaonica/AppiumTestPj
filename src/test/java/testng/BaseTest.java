@@ -3,7 +3,8 @@ package testng;
 import com.core.cli.CommandPrompt;
 import com.core.logger.CustomLogger;
 import com.mobile.appium.AppiumManager;
-import com.mobile.os.android.ADB;
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.MobileElement;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -17,7 +18,6 @@ import java.lang.reflect.Method;
  * Created by pritamkadam on 13/09/16.
  */
 public class BaseTest extends AppiumManager{
-
 
     @BeforeClass()
     public void beforeClass() throws Exception {
@@ -50,14 +50,14 @@ public class BaseTest extends AppiumManager{
 
     @BeforeMethod()
     public void setupDriver(Method name) throws Exception {
-       driver = getDriverInstance();
+       createDriverInstance();
     }
 
 
     @AfterMethod()
     public void killDriverInstance(ITestResult result)
     {
-        driver.quit();
+        getDriver().quit();
     }
 
 }

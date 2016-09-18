@@ -1,7 +1,8 @@
 package cucumber.stepdefs;
 
-import com.core.managers.DriverManager;
 import com.mobile.appium.AppiumDriverFactory;
+import com.mobile.appium.AppiumManager;
+import com.mobile.os.android.ADB;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 
@@ -10,12 +11,16 @@ import io.appium.java_client.MobileElement;
  */
 public class BaseStepDefinition {
 
-    public AppiumDriver driver;
+    public AppiumDriver<MobileElement> driver;
+    private static AppiumManager appiumManager = new AppiumManager();
+//    ADB adb = new ADB();
+
+
 
     public AppiumDriver<MobileElement> getAppiumDriver(){
-        driver = AppiumDriverFactory.getDriver();
-        return driver;
+        return getAppiumDriver();
     }
+
 
 
 }

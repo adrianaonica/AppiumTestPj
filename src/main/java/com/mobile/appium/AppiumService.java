@@ -19,9 +19,9 @@ import java.net.URL;
  */
 public class AppiumService {
 
-    AvailablePort port = new AvailablePort();
-    public AppiumDriverLocalService appiumDriverLocalService;
-    String webKitPort = "";
+    private AvailablePort port = new AvailablePort();
+    private AppiumDriverLocalService appiumDriverLocalService;
+    private String webKitPort = "";
 
 
     public AppiumServiceBuilder startAppiumForAndroidDevice(String deviceID)
@@ -30,7 +30,7 @@ public class AppiumService {
         System.out.println("** Starting Appium Service to handle Android Device:: " + deviceID + " ***");
         System.out.println("**************************************************************************");
 
-        CustomLogger.log.info("Building Appium Service for android");
+        CustomLogger.log.info("Building Appium Service for android device : " + deviceID);
 
         int port = this.port.getPort();
         int chromePort = this.port.getPort();
@@ -58,7 +58,7 @@ public class AppiumService {
         appiumDriverLocalService = builder.build();
         appiumDriverLocalService.start();
 
-        CustomLogger.log.debug("Appium service started with the following arguments =>" +
+        CustomLogger.log.debug("Appium service started for " + deviceID + " with the following arguments =>" +
                 "APPIUM_JS : " + PropertiesReader.config.getValue("APPIUM_JS_PATH") +
                 "LOG_LEVEL : info" +
                 "LOG LOCATION : " + logFileLocation +
@@ -138,10 +138,8 @@ public class AppiumService {
     }
 
     public void destroyAppiumService() {
-        if(appiumDriverLocalService.isRunning()) {
+        if(appiumDriverLocalService.isRunning())
             appiumDriverLocalService.stop();
-            CustomLogger.log.debug("Destroyed Appium server.");
-        }
 
         if(!webKitPort.isEmpty())
             iOSWebKitDebugProxy.kill(webKitPort);

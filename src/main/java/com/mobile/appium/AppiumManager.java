@@ -17,45 +17,32 @@ import java.util.Random;
 /**
  * Created by pritamkadam on 13/09/16.
  */
-public class AppiumManager extends ConnectedDevices{
+public class AppiumManager {
 
-    public static AppiumDriver driver = null;
+    private AppiumDriver driver = null;
+    private AppiumService appiumService = new AppiumService();
+    private iOSDevice iOSDevice = null;
+    private AndroidDevice androidDevice;
+    private MobileDevice currentDevice;
+    private AppiumDriverFactory appiumDriverFactory = new AppiumDriverFactory();
 
-    public AppiumService appiumService = new AppiumService();
-    public iOSDevice iOSDevice = null;
-    public AndroidDevice androidDevice;
+    private static String DEVICE;
+
+//    ConcurrentHashSet will contain all the list of devices
+//    This is shared with all the threads.
     public static ConcurrentHashSet<iOSDevice> iOSDevicesHashSet = new ConcurrentHashSet<>();
     public static ConcurrentHashSet<AndroidDevice> androidDevicesHashSet = new ConcurrentHashSet<>();
     public static ConcurrentHashSet<iOSDevice> iOSSimulatorsHashSet = new ConcurrentHashSet<>();
-    public MobileDevice currentDevice;
-    public AppiumDriverFactory appiumDriverFactory = new AppiumDriverFactory();
-
-    public void setCurrentDevice(MobileDevice currentDevice) {
-        this.currentDevice = currentDevice;
-    }
-
-    public MobileDevice getCurrentDevice() {
-        return currentDevice;
-    }
-
-    public void setAppiumService(AppiumService appiumService) {
-        this.appiumService = appiumService;
-    }
-
-    public AppiumService getAppiumService() {
-        return appiumService;
-    }
 
     public static synchronized void storeAllConnectedDevices(){
         ConcurrentHashSet<iOSDevice> iOSDevicesAndSimulators = new ConcurrentHashSet<>();
-        String deviceType = PropertiesReader.config.getValue("DEVICE");
-
-        if(deviceType.equalsIgnoreCase("Any")) {
+        DEVICE = PropertiesReader.config.getValue("DEVICE");
+        if(DEVICE.equalsIgnoreCase("Any")) {
             androidDevicesHashSet = ConnectedDevices.getConnectedAndroidDevices();
             iOSDevicesAndSimulators = ConnectedDevices.getConnectediOSDevicesOrSimulators();
         }
-        else if(deviceType.contains("iOS"))  iOSDevicesAndSimulators = ConnectedDevices.getConnectediOSDevicesOrSimulators();
-        else if(deviceType.equalsIgnoreCase("Android"))   androidDevicesHashSet = ConnectedDevices.getConnectedAndroidDevices();
+        else if(DEVICE.contains("iOS"))  iOSDevicesAndSimulators = ConnectedDevices.getConnectediOSDevicesOrSimulators();
+        else if(DEVICE.equalsIgnoreCase("Android"))   androidDevicesHashSet = ConnectedDevices.getConnectedAndroidDevices();
         else {
             CustomLogger.log.error("Invalid value for PLATFORM " +
                     "Supported values are => 1) Android " +
@@ -128,7 +115,6 @@ public class AppiumManager extends ConnectedDevices{
     public synchronized void startAppiumService() throws Exception {
 
 //      Get next available device and start appium server.
-        String DEVICE = PropertiesReader.config.getValue("DEVICE");
 
         if(DEVICE.equalsIgnoreCase("iOS_Simulator") || DEVICE.equalsIgnoreCase("iOS")) {
             if (DEVICE.equalsIgnoreCase("iOS_Simulator")) {
@@ -193,35 +179,56 @@ public class AppiumManager extends ConnectedDevices{
         currentDevice.setAvailable(true);
     }
 
-    public synchronized AppiumDriver getDriverInstanceForiOS() throws MalformedURLException {
+    public synchronized AppiumDriver createDriverInstanceForiOS() throws MalformedURLException {
         if(PropertiesReader.config.getValue("AUT").equalsIgnoreCase("Web"))
-            appiumDriverFactory.createDriver(appiumService.getHost(),currentDevice,MobilePlatform.Web_iOS);
+            driver = appiumDriverFactory.createDriver(appiumService.getHost(),currentDevice,MobilePlatform.Web_iOS);
         else
-            appiumDriverFactory.createDriver(appiumService.getHost(),currentDevice,MobilePlatform.iOS);
-        driver = appiumDriverFactory.getDriver();
+            driver = appiumDriverFactory.createDriver(appiumService.getHost(),currentDevice,MobilePlatform.iOS);
+
         return driver;
     }
 
-    public synchronized AppiumDriver getDriverInstanceForAndroid() throws MalformedURLException {
+    public synchronized AppiumDriver createDriverInstanceForAndroid() throws MalformedURLException {
         if(PropertiesReader.config.getValue("AUT").equalsIgnoreCase("Web"))
-            appiumDriverFactory.createDriver(appiumService.getHost(),currentDevice,MobilePlatform.Web_Android);
+            driver = appiumDriverFactory.createDriver(appiumService.getHost(),currentDevice,MobilePlatform.Web_Android);
         else
-            appiumDriverFactory.createDriver(appiumService.getHost(),currentDevice,MobilePlatform.Android);
-        driver = appiumDriverFactory.getDriver();
+            driver = appiumDriverFactory.createDriver(appiumService.getHost(),currentDevice,MobilePlatform.Android);
+
         return driver;
 
     }
 
-    public synchronized AppiumDriver getDriverInstance() throws MalformedURLException {
+    public synchronized void createDriverInstance() throws MalformedURLException {
         String deviceName = currentDevice.getName();
         String udid = currentDevice.getUdid();
 
         if(deviceName.contains("Apple") || deviceName.contains("iPhone") || deviceName.contains("iPad") || udid.length() == 40)
-            driver = getDriverInstanceForiOS();
+            driver = createDriverInstanceForiOS();
         else
-            driver = getDriverInstanceForAndroid();
+            driver = createDriverInstanceForAndroid();
 
+    }
+
+//  Getters & Setters
+
+    public AppiumDriver getDriver() {
         return driver;
+    }
+
+    public void setCurrentDevice(MobileDevice currentDevice) {
+        this.currentDevice = currentDevice;
+    }
+
+    public MobileDevice getCurrentDevice() {
+        return currentDevice;
+    }
+
+    public void setAppiumService(AppiumService appiumService) {
+        this.appiumService = appiumService;
+    }
+
+    public AppiumService getAppiumService() {
+        return appiumService;
     }
 
 

@@ -23,16 +23,7 @@ import java.net.URL;
 public class AppiumDriverFactory {
     private static AppiumDriver driver;
 
-    public static void setDriver(AppiumDriver driver) {
-        AppiumDriverFactory.driver = driver;
-    }
-
-    public static AppiumDriver getDriver() {
-
-        return driver;
-    }
-
-    public synchronized DesiredCapabilities androidNativeCaps(MobileDevice device) {
+    private synchronized DesiredCapabilities androidNativeCaps(MobileDevice device) {
         CustomLogger.log.info("Generating desired capabilities for android native application.");
 
         String version = device.getVersion();
@@ -40,7 +31,7 @@ public class AppiumDriverFactory {
         String name = device.getName();
 
         DesiredCapabilities androidNativeCaps = new DesiredCapabilities();
-        androidNativeCaps.setCapability(MobileCapabilityType.DEVICE_NAME, "Android Device");
+        androidNativeCaps.setCapability(MobileCapabilityType.DEVICE_NAME, name);
         androidNativeCaps.setCapability(MobileCapabilityType.PLATFORM_VERSION, version);
 
         String APP_ACTIVITY = PropertiesReader.android.getValue("APP_ACTIVITY");
@@ -59,7 +50,7 @@ public class AppiumDriverFactory {
         androidNativeCaps.setCapability(MobileCapabilityType.UDID, udid);
 
         CustomLogger.log.info("[Desired Capabilities] =>" +
-                "DEVICE_NAME : Android Device" +
+                "DEVICE_NAME : " + name +
                 "PLATFORM_VERSION : " + version +
                 "APP_ACTIVITY : " + PropertiesReader.android.getValue("APP_ACTIVITY") +
                 "APP_PACKAGE : " + PropertiesReader.android.getValue("APP_PACKAGE") +
@@ -69,15 +60,15 @@ public class AppiumDriverFactory {
         return androidNativeCaps;
     }
 
-    public synchronized DesiredCapabilities androidWebCaps(MobileDevice device) {
-        CustomLogger.log.debug("Generating desired capabilities for android web.");
-
+    private synchronized DesiredCapabilities androidWebCaps(MobileDevice device) {
         String version = device.getVersion();
         String udid = device.getUdid();
         String name = device.getName();
 
+        CustomLogger.log.debug("Creating desired capabilities for " + name + " android web.");
+
         DesiredCapabilities androidWebCaps = new DesiredCapabilities();
-        androidWebCaps.setCapability(MobileCapabilityType.DEVICE_NAME, "Android Device");
+        androidWebCaps.setCapability(MobileCapabilityType.DEVICE_NAME, name);
         androidWebCaps.setCapability(MobileCapabilityType.PLATFORM_VERSION, version);
 
         String BROWSER = PropertiesReader.android.getValue("BROWSER_NAME");
@@ -91,7 +82,7 @@ public class AppiumDriverFactory {
         androidWebCaps.setCapability(MobileCapabilityType.TAKES_SCREENSHOT, true);
 
         CustomLogger.log.info("[Desired Capabilities] =>" +
-                "DEVICE_NAME : Android Device" +
+                "DEVICE_NAME : " + name +
                 "PLATFORM_VERSION : " + version +
                 "BROWSER : " + BROWSER +
                 "UDID : " + udid);
@@ -99,7 +90,7 @@ public class AppiumDriverFactory {
         return androidWebCaps;
     }
 
-    public synchronized DesiredCapabilities iOSWebCaps(MobileDevice device) {
+    private synchronized DesiredCapabilities iOSWebCaps(MobileDevice device) {
         CustomLogger.log.debug("Generating desired capabilities for iOS native application.");
 
 
@@ -118,8 +109,6 @@ public class AppiumDriverFactory {
 
         iOSCapabilities.setCapability(IOSMobileCapabilityType.BROWSER_NAME, BROWSER);
 
-//        iOSCapabilities.setCapability(IOSMobileCapabilityType.BUNDLE_ID, "com.apple.mobilesafari");
-
         if(udid.toCharArray().length == 40)
             iOSCapabilities.setCapability(MobileCapabilityType.UDID, udid);
 
@@ -136,7 +125,7 @@ public class AppiumDriverFactory {
     }
 
 
-    public synchronized DesiredCapabilities iOSNativeCaps(MobileDevice device) {
+    private synchronized DesiredCapabilities iOSNativeCaps(MobileDevice device) {
         CustomLogger.log.debug("Generating desired capabilities for iOS native application.");
 
         String version = device.getVersion();
@@ -148,7 +137,6 @@ public class AppiumDriverFactory {
         DesiredCapabilities iOSCapabilities = new DesiredCapabilities();
         iOSCapabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, version);
         iOSCapabilities.setCapability(IOSMobileCapabilityType.AUTO_ACCEPT_ALERTS, true);
-
 
         if(IOS_APP_PATH.isEmpty())
             iOSCapabilities.setCapability(IOSMobileCapabilityType.BUNDLE_ID, BUNDLE_ID);
