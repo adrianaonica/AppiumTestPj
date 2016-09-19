@@ -25,7 +25,7 @@ public class AppiumManager {
     private AndroidDevice androidDevice;
     private MobileDevice currentDevice;
     private AppiumDriverFactory appiumDriverFactory = new AppiumDriverFactory();
-
+    private static volatile boolean canIGetConnctedDevices = true;
     private static String DEVICE;
 
 //    ConcurrentHashSet will contain all the list of devices
@@ -35,31 +35,34 @@ public class AppiumManager {
     public static ConcurrentHashSet<iOSDevice> iOSSimulatorsHashSet = new ConcurrentHashSet<>();
 
     public static synchronized void storeAllConnectedDevices(){
-        ConcurrentHashSet<iOSDevice> iOSDevicesAndSimulators = new ConcurrentHashSet<>();
-        DEVICE = PropertiesReader.config.getValue("DEVICE");
-        if(DEVICE.equalsIgnoreCase("Any")) {
-            androidDevicesHashSet = ConnectedDevices.getConnectedAndroidDevices();
-            iOSDevicesAndSimulators = ConnectedDevices.getConnectediOSDevicesOrSimulators();
-        }
-        else if(DEVICE.contains("iOS"))  iOSDevicesAndSimulators = ConnectedDevices.getConnectediOSDevicesOrSimulators();
-        else if(DEVICE.equalsIgnoreCase("Android"))   androidDevicesHashSet = ConnectedDevices.getConnectedAndroidDevices();
-        else {
-            CustomLogger.log.error("Invalid value for PLATFORM " +
-                    "Supported values are => 1) Android " +
-                                            "2) iOS " +
-                                            "3) iOS_Simulator " +
-                                            "4) Any");
-            throw new RuntimeException("Invalid value for property \"PLATFORM\" provided.");
-        }
+        if(canIGetConnctedDevices) {
+            canIGetConnctedDevices=false;
+            ConcurrentHashSet<iOSDevice> iOSDevicesAndSimulators = new ConcurrentHashSet<>();
+            DEVICE = PropertiesReader.config.getValue("DEVICE");
+            if (DEVICE.equalsIgnoreCase("Any")) {
+                androidDevicesHashSet = ConnectedDevices.getConnectedAndroidDevices();
+                iOSDevicesAndSimulators = ConnectedDevices.getConnectediOSDevicesOrSimulators();
+            } else if (DEVICE.contains("iOS"))
+                iOSDevicesAndSimulators = ConnectedDevices.getConnectediOSDevicesOrSimulators();
+            else if (DEVICE.equalsIgnoreCase("Android"))
+                androidDevicesHashSet = ConnectedDevices.getConnectedAndroidDevices();
+            else {
+                CustomLogger.log.error("Invalid value for PLATFORM " +
+                        "Supported values are => 1) Android " +
+                        "2) iOS " +
+                        "3) iOS_Simulator " +
+                        "4) Any");
+                throw new RuntimeException("Invalid value for property \"PLATFORM\" provided.");
+            }
 
 //      Extract out iOS simulators & iOS real devices
-        if(!iOSDevicesAndSimulators.isEmpty()){
-            for(iOSDevice iOSDevice : iOSDevicesAndSimulators){
-                if(iOSDevice.isSimulator()) iOSSimulatorsHashSet.add(iOSDevice);
-                else    iOSDevicesHashSet.add(iOSDevice);
+            if (!iOSDevicesAndSimulators.isEmpty()) {
+                for (iOSDevice iOSDevice : iOSDevicesAndSimulators) {
+                    if (iOSDevice.isSimulator()) iOSSimulatorsHashSet.add(iOSDevice);
+                    else iOSDevicesHashSet.add(iOSDevice);
+                }
             }
         }
-
     }
 
     public static synchronized iOSDevice getNextAvailableiOSDevice() {

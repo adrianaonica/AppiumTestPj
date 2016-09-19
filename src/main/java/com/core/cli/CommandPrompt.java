@@ -22,7 +22,7 @@ public class CommandPrompt {
             throw new RuntimeException(e.getMessage());
         }
 
-        CustomLogger.log.debug("Output of command => " + command + " is => \n" + output);
+        CustomLogger.log.debug("Output of command => " + command + " is => " + output);
         return output;
     }
 }
