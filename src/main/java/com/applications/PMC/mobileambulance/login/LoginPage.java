@@ -1,9 +1,6 @@
 package com.applications.PMC.mobileambulance.login;
 
 import com.applications.BasePage;
-import com.applications.speedtest.pages.begintest.BeginTestPage;
-import com.applications.speedtest.pages.begintest.BeginTestPageObjects;
-import com.applications.speedtest.pages.home.HomePage;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -31,7 +28,7 @@ public class LoginPage extends BasePage{
 
     public void verifyAllElementsPresentOnLandingPage(){
         Assert.assertTrue(loginPageObjects.pmcCareLogo.isDisplayed());
-        Assert.assertTrue(loginPageObjects.appTitleMobileAmbulance.isDisplayed());
+        Assert.assertTrue(loginPageObjects.enAppTitleMobileAmbulance.isDisplayed());
         Assert.assertTrue(loginPageObjects.roadEngineerRadioBtn.isDisplayed());
         Assert.assertTrue(loginPageObjects.contractorRadioBtn.isDisplayed());
         Assert.assertTrue(loginPageObjects.userNameTxt.isDisplayed());

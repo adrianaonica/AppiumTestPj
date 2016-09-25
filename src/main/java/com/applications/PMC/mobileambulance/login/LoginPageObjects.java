@@ -11,9 +11,6 @@ public class LoginPageObjects {
     @FindBy(xpath = "//img[contains(@src,'pmc-care-logo')]")
     public MobileElement pmcCareLogo;
 
-    @FindBy(xpath = "//*[contains(text(),'Mobile Ambulance')]")
-    public MobileElement appTitleMobileAmbulance;
-
     @FindBy(xpath = "//input[@type='radio'][@value='ROAD ENGINEER']")
     public MobileElement roadEngineerRadioBtn;
 
@@ -34,5 +31,15 @@ public class LoginPageObjects {
 
     @FindBy(xpath = "//button[contains(text(),'Marathi')]")
     public MobileElement lngMarathiBtn;
+
+    // Language => English
+    @FindBy(xpath = "//*[contains(text(),'Mobile Ambulance')]")
+    public MobileElement enAppTitleMobileAmbulance;
+
+    // Language => Marathi
+    @FindBy(xpath = "//*[contains(text(),'मोबाइल ऍम्ब्युलन्स')]")
+    public MobileElement mrAppTitleMobileAmbulance;
+
+
 
 }
