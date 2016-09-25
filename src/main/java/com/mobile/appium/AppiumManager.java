@@ -19,7 +19,7 @@ import java.util.Random;
  */
 public class AppiumManager {
 
-    private AppiumDriver driver = null;
+    private static AppiumDriver driver = null;
     private AppiumService appiumService = new AppiumService();
     private iOSDevice iOSDevice = null;
     private AndroidDevice androidDevice;
@@ -214,7 +214,7 @@ public class AppiumManager {
 
 //  Getters & Setters
 
-    public AppiumDriver getDriver() {
+    public static AppiumDriver getDriver() {
         return driver;
     }
 

@@ -1,6 +1,8 @@
 package com.core.utils;
 
+import com.core.cli.CommandPrompt;
 import com.core.logger.CustomLogger;
+import com.core.managers.OSManager;
 import org.apache.log4j.Level;
 import org.apache.log4j.net.SyslogAppender;
 import org.testng.annotations.Test;
@@ -33,4 +35,16 @@ public class TestUtils {
         System.out.println(number);
     }
 
+
+    @Test
+    public void testRemoveTmpDir(){
+        CustomLogger.configure();
+        CommandPrompt.run("rm -rd " + OSManager.getWorkingDir() + "/target/tmp*");
+    }
+
+    @Test
+    public void testSystemPath(){
+        System.setProperty("HOME", "/Users/");
+        System.out.print(System.getProperty("HOME"));
+    }
 }
