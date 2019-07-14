@@ -16,10 +16,4 @@ public class Speedtest {
 
     public HomePage homePage = new HomePage(driver);
 
-    public ResultsPage resultsPage = new ResultsPage(driver);
-
-    public SettingsPage settingsPage = new SettingsPage(driver);
-
-    public Menu menu = new Menu(driver);
-
   }

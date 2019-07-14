@@ -36,39 +36,7 @@ public class BasePage {
         return el;
     }
 
-    public void swipeRightUntilTextExists(String expected) {
-        do {
-            swipeRight();
-        } while (!driver.getPageSource().contains(expected));
-    }
-
-    public void swipeLeftUntilTextExists(String expected) {
-        do {
-            swipeLeft();
-        } while (!driver.getPageSource().contains(expected));
-    }
-
-    public void swipeRight() {
-        Dimension size = driver.manage().window().getSize();
-        int startx = (int) (size.width * 0.9);
-        int endx = (int) (size.width * 0.20);
-        int starty = size.height / 2;
-        driver.swipe(startx, starty, endx, starty, 1000);
-    }
-
-    public void swipeLeft() {
-        Dimension size = driver.manage().window().getSize();
-        int startx = (int) (size.width * 0.8);
-        int endx = (int) (size.width * 0.20);
-        int starty = size.height / 2;
-        driver.swipe(startx, starty, endx, starty, 1000);
-    }
-
-    public void scrollDirection(MobileElement Id, SwipeElementDirection arg) {
-        MobileElement e = Id;
-        e.swipe(arg, 1000);
-    }
-
+   
     /**
      * method to set the context to required view.
      *
@@ -90,7 +58,6 @@ public class BasePage {
 
     public void clickBackButton() {
         driver.navigate().back(); //Closes keyboard
-        //driver.navigate().back(); //Comes out of edit mode
     }
 
 
