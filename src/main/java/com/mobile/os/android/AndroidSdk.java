@@ -2,9 +2,7 @@ package com.mobile.os.android;
 
 import java.io.*;
 
-/**
- * Created by pritamkadam on 09/09/16.
- */
+
 public class AndroidSdk {
 
     private static String ANDROID_HOME;

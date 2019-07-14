@@ -2,9 +2,6 @@ package com.core.utils;
 
 import java.util.Date;
 
-/**
- * Created by pritamkadam on 09/09/16.
- */
 public class Timer {
 
     public long startStamp;

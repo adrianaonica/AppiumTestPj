@@ -14,9 +14,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Random;
 
-/**
- * Created by pritamkadam on 13/09/16.
- */
 public class AppiumManager {
 
     private static AppiumDriver driver = null;
@@ -28,8 +25,6 @@ public class AppiumManager {
     private static volatile boolean canIGetConnctedDevices = true;
     private static String DEVICE;
 
-//    ConcurrentHashSet will contain all the list of devices
-//    This is shared with all the threads.
     public static ConcurrentHashSet<iOSDevice> iOSDevicesHashSet = new ConcurrentHashSet<>();
     public static ConcurrentHashSet<AndroidDevice> androidDevicesHashSet = new ConcurrentHashSet<>();
     public static ConcurrentHashSet<iOSDevice> iOSSimulatorsHashSet = new ConcurrentHashSet<>();

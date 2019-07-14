@@ -1,8 +1,5 @@
 package com.applications;
 
-/**
- * Created by pritamkadam on 17/09/16.
- */
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;

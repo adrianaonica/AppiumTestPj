@@ -5,9 +5,7 @@ import com.core.logger.CustomLogger;
 import java.io.IOException;
 import java.util.Scanner;
 
-/*
- * Created by pritamkadam on 09/09/16.
-*/
+
 
 public class CommandPrompt {
 

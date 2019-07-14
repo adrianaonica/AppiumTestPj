@@ -14,9 +14,6 @@ import io.appium.java_client.service.local.flags.ServerArgument;
 import java.io.File;
 import java.net.URL;
 
-/**
- * Created by pritamkadam on 09/09/16.
- */
 public class AppiumService {
 
     private AvailablePort port = new AvailablePort();

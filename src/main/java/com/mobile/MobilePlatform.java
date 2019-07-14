@@ -1,8 +1,6 @@
 package com.mobile;
 
-/**
- * Created by pritamkadam on 10/09/16.
- */
+
 public enum MobilePlatform {
 
 

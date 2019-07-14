@@ -8,9 +8,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-/**
- * Created by pritamkadam on 10/09/16.
- */
 public class PropertiesReader extends Properties{
 
     public static PropertiesReader config =  new PropertiesReader();

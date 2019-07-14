@@ -3,9 +3,6 @@ package com.applications.speedtest.pages.home;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
-/**
- * Created by pritamkadam on 17/09/16.
- */
 public class HomePageObjects {
 
     @AndroidFindBy(id = "org.zwanoo.android.speedtest:id/non_native_ad_btn_dismiss")

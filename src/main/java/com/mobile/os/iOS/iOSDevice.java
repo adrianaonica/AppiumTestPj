@@ -5,10 +5,6 @@ import com.mobile.MobileDevice;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * Created by pritamkadam on 13/09/16.
- */
-
 public class iOSDevice implements MobileDevice{
     private String name;
     private String version;

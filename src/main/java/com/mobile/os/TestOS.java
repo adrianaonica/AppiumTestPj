@@ -7,9 +7,6 @@ import org.testng.annotations.Test;
 
 import java.io.File;
 
-/**
- * Created by pritamkadam on 17/09/16.
- */
 public class TestOS {
 
     {

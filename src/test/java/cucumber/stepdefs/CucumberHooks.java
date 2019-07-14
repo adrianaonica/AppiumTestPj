@@ -10,9 +10,6 @@ import cucumber.api.java.Before;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 
-/**
- * Created by pritamkadam on 17/09/16.
- */
 public class CucumberHooks extends AppiumManager{
     private static MobileDevice currentDevice;
     private static AppiumService appiumService;

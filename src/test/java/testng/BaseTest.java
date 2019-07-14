@@ -15,9 +15,6 @@ import org.testng.annotations.BeforeMethod;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
-/**
- * Created by pritamkadam on 13/09/16.
- */
 public class BaseTest extends AppiumManager{
 
     @BeforeClass()

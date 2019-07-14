@@ -11,9 +11,6 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 
-/**
- * Created by pritamkadam on 13/09/16.
- */
 public class TestConnectedDevices {
 
 

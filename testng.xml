@@ -5,9 +5,6 @@
     <test name="TestNG Test">
         <classes>
             <class name="testng.apps.wordpress.WordpressTest"/>
-            <class name="testng.apps.wordpress.WordpressTest2"/>
-            <class name="testng.apps.wordpress.WordpressTest3"/>
-            <class name="testng.apps.wordpress.WordpressTest4"/>
         </classes>
     </test> <!-- TestNG Test -->
 </suite> <!-- TestNG Forum -->

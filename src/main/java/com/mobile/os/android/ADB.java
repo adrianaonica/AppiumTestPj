@@ -8,9 +8,6 @@ import com.sun.org.apache.xpath.internal.operations.And;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/**
- * Created by pritamkadam on 09/09/16.
- */
 public class ADB {
 
     private String ID;

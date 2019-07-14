@@ -5,9 +5,6 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 
-/**
- * Created by pritamkadam on 09/09/16.
- */
 public class CustomLogger {
 
     public static Logger log;

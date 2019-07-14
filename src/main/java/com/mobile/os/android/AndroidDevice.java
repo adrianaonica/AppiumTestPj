@@ -2,9 +2,6 @@ package com.mobile.os.android;
 
 import com.mobile.MobileDevice;
 
-/**
- * Created by pritamkadam on 13/09/16.
- */
 public class AndroidDevice implements MobileDevice{
     private String name;
     private String  version;

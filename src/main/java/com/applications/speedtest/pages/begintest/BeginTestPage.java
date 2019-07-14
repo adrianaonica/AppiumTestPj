@@ -7,9 +7,7 @@ import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import org.openqa.selenium.support.PageFactory;
 
-/**
- * Created by pritamkadam on 17/09/16.
- */
+
 public class BeginTestPage extends BasePage{
 
 

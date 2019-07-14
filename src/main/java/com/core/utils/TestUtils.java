@@ -10,9 +10,6 @@ import org.testng.annotations.Test;
 import java.io.File;
 import java.util.Random;
 
-/**
- * Created by pritamkadam on 10/09/16.
- */
 public class TestUtils {
 
     @Test

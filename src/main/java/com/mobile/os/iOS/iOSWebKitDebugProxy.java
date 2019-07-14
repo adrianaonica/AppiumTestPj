@@ -7,9 +7,6 @@ import com.mobile.appium.AvailablePort;
 import java.io.IOException;
 
 
-/**
- * Created by pritamkadam on 15/09/16.
- */
 public class iOSWebKitDebugProxy {
 
 

@@ -4,7 +4,6 @@ import com.core.logger.CustomLogger;
 import com.core.utils.PropertiesReader;
 import com.mobile.MobileDevice;
 import com.mobile.MobilePlatform;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
@@ -13,13 +12,10 @@ import io.appium.java_client.remote.IOSMobileCapabilityType;
 import io.appium.java_client.remote.MobileCapabilityType;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 
-/**
- * Created by pritamkadam on 10/09/16.
- */
+
 public class AppiumDriverFactory {
     private static AppiumDriver driver;
 
